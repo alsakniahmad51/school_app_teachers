@@ -44,7 +44,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                     Expanded(
                       child: showAttachments
                           ? const CourseAttachmentsPage()
-                          : const CourseTestsPage(),
+                          : CourseTestsPage(courseTitle: widget.courseTitle),
                     ),
                   ],
                 ),

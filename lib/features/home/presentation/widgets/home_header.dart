@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teachers_app/features/home/presentation/widgets/notification_icon.dart';
 
 import 'home_colors.dart';
 
@@ -39,7 +40,7 @@ class HomeHeader extends StatelessWidget {
             ),
           ),
           SizedBox(width: 16),
-          NotificationButton(),
+          NotificationIcon(),
         ],
       ),
     );
@@ -67,54 +68,6 @@ class ProfileAvatar extends StatelessWidget {
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
-      ),
-    );
-  }
-}
-
-class NotificationButton extends StatelessWidget {
-  const NotificationButton({super.key, this.onPressed});
-
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      label: 'الإشعارات',
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          IconButton(
-            onPressed: onPressed,
-            icon: const Icon(Icons.notifications_none_outlined, size: 24),
-            color: HomeColors.primaryText,
-            style: IconButton.styleFrom(
-              fixedSize: const Size(40, 40),
-              side: const BorderSide(color: HomeColors.border),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
-          Positioned(
-            top: -3,
-            right: -3,
-            child: Container(
-              width: 16,
-              height: 16,
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: HomeColors.critical,
-                shape: BoxShape.circle,
-              ),
-              child: const Text(
-                '1',
-                style: TextStyle(color: Colors.white, fontSize: 10, height: 1),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

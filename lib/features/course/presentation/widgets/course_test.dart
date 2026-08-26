@@ -1,3 +1,5 @@
+import 'test_details_models.dart';
+
 enum CourseTestStatus { submittedToManagement, published }
 
 class CourseTest {
@@ -10,6 +12,7 @@ class CourseTest {
     required this.studentCount,
     required this.teacher,
     required this.supervisor,
+    this.studentMarks = const [],
   });
 
   final String title;
@@ -20,4 +23,5 @@ class CourseTest {
   final int studentCount;
   final String teacher;
   final String supervisor;
+  final List<StudentMarkItem> studentMarks;
 }
