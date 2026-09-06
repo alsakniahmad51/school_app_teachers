@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachers_app/core/functions/navigation.dart';
+import 'package:teachers_app/core/manager/fcm_cubit/fcm_cubit.dart';
 import 'package:teachers_app/features/class/presentation/pages/class_page.dart';
 
 import '../widgets/class_card.dart';
@@ -16,6 +20,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedGrade = 7;
+  @override
+  void initState() {
+    super.initState();
+    _initFcm();
+  }
+
+  Future<void> _initFcm() async {
+    final fcmCubit = context.read<FcmCubit>();
+
+    await fcmCubit.init(true, null);
+    log('FCM Token: ${fcmCubit.state.fcmToken}');
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -7,16 +7,26 @@ class CourseAttachmentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        AttachmentFileItem(
-          title: 'Session 1.0.pdf',
-          extension: 'PDF',
-          isPrimary: true,
+    return Scaffold(
+      floatingActionButton: ClipRRect(
+        borderRadius: BorderRadiusGeometry.all(Radius.circular(50)),
+        child: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.add, color: Colors.white),
+          backgroundColor: const Color(0xFF007353),
         ),
-        SizedBox(height: 12),
-        AttachmentFileItem(title: 'Session 1.1.pdf', extension: 'PDF'),
-      ],
+      ),
+      body: const Column(
+        children: [
+          AttachmentFileItem(
+            title: 'Session 1.0.pdf',
+            extension: 'PDF',
+            isPrimary: true,
+          ),
+          SizedBox(height: 12),
+          AttachmentFileItem(title: 'Session 1.1.pdf', extension: 'PDF'),
+        ],
+      ),
     );
   }
 }

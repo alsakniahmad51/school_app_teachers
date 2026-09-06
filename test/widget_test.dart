@@ -39,7 +39,9 @@ void main() {
     );
 
     await tester.pumpWidget(
-      const MaterialApp(home: CourseTestsPage(tests: [test])),
+      const MaterialApp(
+        home: CourseTestsPage(tests: [test], courseTitle: 'cscsc'),
+      ),
     );
 
     expect(find.text('تم النشر'), findsOneWidget);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:teachers_app/core/manager/fcm_cubit/fcm_cubit.dart';
 
 import '../../home/presentation/pages/home_page.dart';
 
@@ -20,9 +22,14 @@ class _SplashPageState extends State<SplashPage> {
         return;
       }
 
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => const HomePage()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => FcmCubit(),
+            child: const HomePage(),
+          ),
+        ),
+      );
     });
   }
 
