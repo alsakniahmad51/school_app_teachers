@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "222056026971",
+    "firebase_url": "https://school-r26rf-default-rtdb.firebaseio.com",
+    "project_id": "school-r26rf",
+    "storage_bucket": "school-r26rf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222056026971:android:57a70a3eacc801c0dfc07e",
+        "android_client_info": {
+          "package_name": "com.example.teachers_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiOAi8S4KAZzBVM_RuHZ3xQvl3wXFbbCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
