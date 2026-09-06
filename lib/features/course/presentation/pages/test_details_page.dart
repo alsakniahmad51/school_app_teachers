@@ -170,27 +170,31 @@ class _TestDetailsPageState extends State<TestDetailsPage> {
                       horizontal: 20,
                       vertical: 12,
                     ),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 44,
-                      child: FilledButton.icon(
-                        onPressed: _publishMarks,
-                        style: FilledButton.styleFrom(
-                          backgroundColor: const Color(0xff007353),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          height: 44,
+                          child: FilledButton.icon(
+                            onPressed: _publishMarks,
+                            style: FilledButton.styleFrom(
+                              backgroundColor: const Color(0xff007353),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            icon: const Icon(Icons.send_outlined, size: 20),
+                            label: const Text(
+                              'نشر العلامات للطلاب',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                height: 1.5,
+                              ),
+                            ),
                           ),
                         ),
-                        icon: const Icon(Icons.send_outlined, size: 20),
-                        label: const Text(
-                          'نشر العلامات للطلاب',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            height: 1.5,
-                          ),
-                        ),
-                      ),
+                      ],
                     ),
                   ),
                 ],

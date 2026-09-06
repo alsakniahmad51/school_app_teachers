@@ -28,30 +28,30 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  flutter:
-    sdk: flutter
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  phosphor_flutter: ^2.1.0
-  flutter_lucide: ^1.33.0
+  dartz: ^0.10.1
   dio: ^5.11.0
-  flutter_bloc: ^9.1.1
-  flutter_svg: ^2.3.0
-  get_it: ^9.2.1
+  equatable: ^2.1.0
   firebase_core: ^4.14.0
   firebase_messaging: ^16.6.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  flutter_lucide: ^1.33.0
+  flutter_secure_storage: ^11.0.0
+  flutter_svg: ^2.3.0
+  get_it: ^9.2.1
+  phosphor_flutter: ^2.1.0
   shared_preferences: ^2.5.5
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.14.4
 flutter_launcher_icons:
   android: "launcher_icon"
   min_sdk_android: 21
-  image_path: "assets/icon/icon.png" 
+  image_path: "assets/icon/icon.png"
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -91,7 +91,6 @@ flutter:
       fonts:
         - asset: assets/font/Montserrat-Arabic Regular 400.otf
         - asset: assets/font/Montserrat-Arabic Light 300.otf
-
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

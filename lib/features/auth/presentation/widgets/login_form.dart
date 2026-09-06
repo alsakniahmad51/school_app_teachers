@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teachers_app/core/functions/navigation.dart';
+import 'package:teachers_app/features/auth/presentation/auth_cubit/login_cubit.dart';
 import 'package:teachers_app/features/auth/presentation/widgets/email_field.dart';
 import 'package:teachers_app/features/auth/presentation/widgets/password_field.dart';
 import 'package:teachers_app/features/home/presentation/pages/home_page.dart';
 
-import '../cubit/auth_cubit.dart';
-import '../cubit/auth_state.dart';
 import 'primary_button.dart';
 
 class LoginForm extends StatefulWidget {
@@ -30,34 +28,40 @@ class _LoginFormState extends State<LoginForm> {
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    context.navigationWithFade(HomePage());
 
-    // context.read<AuthCubit>().login(
-    //   email: _emailController.text.trim(),
-    //   password: _passwordController.text.trim(),
-    // );
+    context.read<LoginCubit>().login(
+      userName: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state is AuthSuccess) {
+        if (state is LoginSuccess) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text('مرحباً ${state.user.name}')));
+          ).showSnackBar(SnackBar(content: Text('مرحباً ')));
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (route) => false,
+          );
+          // context.navigationWithFade(HomePage());
         }
 
-        if (state is AuthFailure) {
+        if (state is LoginFailure) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
-        final isLoading = state is AuthLoading;
+        final isLoading = state is LoginLoading;
 
         return Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

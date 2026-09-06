@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
     final fcmCubit = context.read<FcmCubit>();
 
     await fcmCubit.init(true, null);
-    log('FCM Token: ${fcmCubit.state.fcmToken}');
   }
 
   @override

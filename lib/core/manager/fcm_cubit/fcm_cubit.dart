@@ -3,14 +3,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teachers_app/core/manager/fcm_cubit/fcm_state.dart';
-import 'package:teachers_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:teachers_app/features/auth/presentation/auth_cubit/login_cubit.dart';
 
 class FcmCubit extends Cubit<FcmState> {
   FcmCubit() : super(const FcmState());
 
   static const _fcmKey = 'fcm_token';
 
-  Future<void> init(bool isRegister, AuthCubit? userProfileCubit) async {
+  Future<void> init(bool isRegister, LoginCubit? userProfileCubit) async {
     try {
       // await Firebase.initializeApp();
       final prefs = await SharedPreferences.getInstance();
@@ -34,7 +34,7 @@ class FcmCubit extends Cubit<FcmState> {
     } catch (e) {}
   }
 
-  Future<void> deleteFcmToken(AuthCubit? userProfileCubit) async {
+  Future<void> deleteFcmToken(LoginCubit? userProfileCubit) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 

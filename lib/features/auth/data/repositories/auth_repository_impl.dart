@@ -1,21 +1,38 @@
-import '../../domain/entities/user_entity.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../datasources/auth_remote_datasource.dart';
+import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
+import 'package:teachers_app/core/errors/exceptions.dart';
+import 'package:teachers_app/features/auth/domain/repositories/auth_repo.dart';
+import 'package:teachers_app/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:teachers_app/features/auth/data/models/login_request_model.dart';
+import 'package:teachers_app/features/auth/domain/entities/auth_user.dart';
 
-class AuthRepositoryImpl implements AuthRepository {
+class AuthRepositoryImpl implements AuthRepo {
   final AuthRemoteDataSource remoteDataSource;
 
-  AuthRepositoryImpl({required this.remoteDataSource});
+  AuthRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<UserEntity> login({
-    required String email,
-    required String password,
-  }) async {
-    final result = await remoteDataSource.login(
-      email: email,
-      password: password,
-    );
-    return result.toEntity();
+  Future<Either<Failure, AuthUser>> login(
+    String userName,
+    String password,
+  ) async {
+    try {
+      final model = await remoteDataSource.login(
+        LoginRequestModel(userName: userName, password: password),
+      );
+      return Right(
+        AuthUser(
+          message: model.message,
+          accessToken: model.accessToken,
+          id: model.id,
+        ),
+      );
+    } catch (e) {
+      if (e is DioException) {
+        return Left(handleDioExceptions(e));
+      } else {
+        return Left(ServerFailure(e.toString()));
+      }
+    }
   }
 }

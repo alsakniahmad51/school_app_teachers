@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:teachers_app/core/manager/fcm_cubit/fcm_cubit.dart';
+import 'package:teachers_app/features/auth/presentation/pages/login_page.dart';
 
 import '../../home/presentation/pages/home_page.dart';
 
 class SplashPage extends StatefulWidget {
-  const SplashPage({super.key});
-
+  const SplashPage({super.key, required this.isAuthenticated});
+  final bool isAuthenticated;
   @override
   State<SplashPage> createState() => _SplashPageState();
 }
@@ -26,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
         MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => FcmCubit(),
-            child: const HomePage(),
+            child: widget.isAuthenticated ? HomePage() : LoginPage(),
           ),
         ),
       );

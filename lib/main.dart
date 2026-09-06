@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:teachers_app/features/home/presentation/pages/home_page.dart';
+import 'package:teachers_app/core/services/token_storage.dart';
+
 import 'package:teachers_app/features/splash/presentation/splash_page.dart';
 import 'package:teachers_app/firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,14 +9,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  final token = await savedToken();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  runApp(const SchoolApp());
+  runApp(SchoolApp(isAuthenticated: token != null));
 }
 
 class SchoolApp extends StatelessWidget {
-  const SchoolApp({super.key});
-
+  const SchoolApp({super.key, required this.isAuthenticated});
+  final bool isAuthenticated;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,11 +27,15 @@ class SchoolApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff007353)),
         useMaterial3: true,
       ),
-      home: SplashPage(),
+      home: SplashPage(isAuthenticated: isAuthenticated),
     );
   }
 }
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
+}
+
+Future<String?> savedToken() async {
+  return TokenStorage.getToken();
 }

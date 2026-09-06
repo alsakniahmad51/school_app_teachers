@@ -15,7 +15,10 @@ enum FieldType {
 Map<FieldType, String?> remoteErrors = {};
 
 String? validateField(
-    FieldType type, String? value, dynamic extraValidationData) {
+  FieldType type,
+  String? value,
+  dynamic extraValidationData,
+) {
   if (remoteErrors[type] != null) {
     return remoteErrors[type];
   }
@@ -37,19 +40,19 @@ String? validateField(
         return 'البريد الإلكتروني مطلوب';
       }
 
-      final v = value.trim().toLowerCase();
+    // final v = value.trim().toLowerCase();
 
-      if (!v.endsWith('@gmail.com')) {
-        return 'صيغة البريد الإلكتروني غير صحيحة';
-      }
+    // if (!v.endsWith('@gmail.com')) {
+    //   return 'صيغة البريد الإلكتروني غير صحيحة';
+    // }
 
-      final emailRegex = RegExp(
-          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$");
+    // final emailRegex = RegExp(
+    //     r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$");
 
-      if (!emailRegex.hasMatch(v)) {
-        return 'صيغة البريد الإلكتروني غير صحيحة';
-      }
-      break;
+    // if (!emailRegex.hasMatch(v)) {
+    //   return 'صيغة البريد الإلكتروني غير صحيحة';
+    // }
+    // break;
 
     case FieldType.password:
       if (value == null || value.isEmpty) return 'كلمة المرور مطلوبة';
