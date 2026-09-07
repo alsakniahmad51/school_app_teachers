@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachers_app/core/functions/navigation.dart';
 import 'package:teachers_app/core/manager/fcm_cubit/fcm_cubit.dart';
 import 'package:teachers_app/features/class/presentation/pages/class_page.dart';
+import 'package:teachers_app/features/home/domain/entity/section.dart';
+import 'package:teachers_app/features/home/domain/entity/teacher_sections.dart';
+import 'package:teachers_app/features/home/presentation/manager/teacher_sections_cubit.dart/teacher_sections_cubit.dart';
 
 import '../widgets/class_card.dart';
 import '../widgets/grade_switcher.dart';
@@ -24,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _initFcm();
+    context.read<TeacherSectionsCubit>().getTeacherSections();
   }
 
   Future<void> _initFcm() async {
@@ -40,36 +44,50 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: HomeColors.background,
         body: SafeArea(
           bottom: false,
-          child: Column(
-            children: [
-              const HomeHeader(),
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      GradeSwitcher(
-                        selectedGrade: _selectedGrade,
-                        onGradeSelected: (grade) =>
-                            setState(() => _selectedGrade = grade),
+          child: BlocBuilder<TeacherSectionsCubit, TeacherSectionsState>(
+            builder: (context, state) {
+              if (state is TeacherSectionsLoading) {
+                return Expanded(
+                  child: const Center(child: CircularProgressIndicator()),
+                );
+              } else if (state is TeacherSectionsSuccess) {
+                return Column(
+                  children: [
+                    HomeHeader(teacherName: state.data.teacherName),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            GradeSwitcher(
+                              selectedGrade: _selectedGrade,
+                              onGradeSelected: (grade) =>
+                                  setState(() => _selectedGrade = grade),
+                            ),
+                            const SizedBox(height: 12),
+                            ..._classCards(teachersections: state.data),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 12),
-                      ..._classCards,
-                    ],
-                  ),
-                ),
-              ),
-            ],
+                    ),
+                  ],
+                );
+              } else if (state is TeacherSectionsFailure) {
+                return const Center(
+                  child: Text('حدث خطأ أثناء تحميل البيانات'),
+                );
+              }
+              return const Center(child: Text('حدث خطأ غير معروف'));
+            },
           ),
         ),
       ),
     );
   }
 
-  List<Widget> get _classCards {
-    const sections = ['الأولى', 'الثانية', 'الثالثة'];
-
+  List<Widget> _classCards({required TeacherSections teachersections}) {
+    List<Section> sections = teachersections.sections;
     return [
       for (var index = 0; index < sections.length; index++)
         Padding(
@@ -77,14 +95,14 @@ class _HomePageState extends State<HomePage> {
             bottom: index == sections.length - 1 ? 0 : 8,
           ),
           child: ClassCard(
-            title: 'الشعبة ${sections[index]}',
-            onPressed: _showClassDetails,
+            title: sections[index].name,
+            onPressed: () => _showClassDetails(sections[index]),
           ),
         ),
     ];
   }
 
-  void _showClassDetails() {
-    context.navigationWithFade(const ClassPage());
+  void _showClassDetails(Section section) {
+    context.navigationWithFade(ClassPage(section: section));
   }
 }

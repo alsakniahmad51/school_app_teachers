@@ -4,14 +4,14 @@ import 'package:teachers_app/features/home/presentation/widgets/notification_ico
 import 'home_colors.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({super.key});
-
+  const HomeHeader({super.key, required this.teacherName});
+  final String teacherName;
   @override
   Widget build(BuildContext context) {
     return Container(
       color: HomeColors.surface,
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-      child: const Row(
+      child: Row(
         children: [
           ProfileAvatar(),
           SizedBox(width: 8),
@@ -20,7 +20,7 @@ class HomeHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'أ. محمد عبد الكريم',
+                  "أ.${teacherName}",
                   style: TextStyle(
                     color: HomeColors.primaryText,
                     fontSize: 16,
@@ -62,7 +62,7 @@ class ProfileAvatar extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: const Text(
-        'م',
+        "أ",
         style: TextStyle(
           color: Colors.white,
           fontSize: 16,

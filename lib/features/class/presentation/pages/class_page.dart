@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:teachers_app/features/class/presentation/widgets/class_header.dart';
+import 'package:teachers_app/features/home/domain/entity/section.dart';
 
 import '../widgets/semester_switcher.dart';
 import '../widgets/subject_list_item.dart';
 import '../widgets/summary_card.dart';
 
 class ClassPage extends StatelessWidget {
-  const ClassPage({super.key});
+  final Section section;
+  const ClassPage({super.key, required this.section});
 
   @override
   Widget build(BuildContext context) {

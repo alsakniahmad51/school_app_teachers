@@ -1,8 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:teachers_app/core/api/dio_consumer.dart';
 import 'package:teachers_app/core/manager/fcm_cubit/fcm_cubit.dart';
 import 'package:teachers_app/features/auth/presentation/pages/login_page.dart';
+import 'package:teachers_app/features/home/data/datasources/sections_remote_data_source.dart';
+import 'package:teachers_app/features/home/data/repo/sections_repository_impl.dart';
+import 'package:teachers_app/features/home/domain/usecases/get_teacher_sections_use_case.dart';
+import 'package:teachers_app/features/home/presentation/manager/teacher_sections_cubit.dart/teacher_sections_cubit.dart';
 
 import '../../home/presentation/pages/home_page.dart';
 
@@ -25,8 +31,19 @@ class _SplashPageState extends State<SplashPage> {
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => FcmCubit(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => FcmCubit()),
+              BlocProvider(
+                create: (context) => TeacherSectionsCubit(
+                  GetTeacherSectionsUseCase(
+                    SectionsRepositoryImpl(
+                      SectionsRemoteDataSourceImpl(DioConsumer(dio: Dio())),
+                    ),
+                  ),
+                ),
+              ),
+            ],
             child: widget.isAuthenticated ? HomePage() : LoginPage(),
           ),
         ),
