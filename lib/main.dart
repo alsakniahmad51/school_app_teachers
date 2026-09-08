@@ -1,6 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachers_app/core/api/dio_consumer.dart';
+import 'package:teachers_app/core/manager/fcm_cubit/fcm_cubit.dart';
 import 'package:teachers_app/core/services/token_storage.dart';
+import 'package:teachers_app/features/home/data/datasources/sections_remote_data_source.dart';
+import 'package:teachers_app/features/home/data/repo/sections_repository_impl.dart';
+import 'package:teachers_app/features/home/domain/usecases/get_teacher_sections_use_case.dart';
+import 'package:teachers_app/features/home/presentation/manager/teacher_sections_cubit.dart/teacher_sections_cubit.dart';
 
 import 'package:teachers_app/features/splash/presentation/splash_page.dart';
 import 'package:teachers_app/firebase_options.dart';
@@ -11,7 +19,23 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final token = await savedToken();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  runApp(SchoolApp(isAuthenticated: token != null));
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => FcmCubit()),
+        BlocProvider(
+          create: (context) => TeacherSectionsCubit(
+            GetTeacherSectionsUseCase(
+              SectionsRepositoryImpl(
+                SectionsRemoteDataSourceImpl(DioConsumer(dio: Dio())),
+              ),
+            ),
+          ),
+        ),
+      ],
+      child: SchoolApp(isAuthenticated: token != null),
+    ),
+  );
 }
 
 class SchoolApp extends StatelessWidget {

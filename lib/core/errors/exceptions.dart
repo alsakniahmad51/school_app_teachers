@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 abstract class Failure {
@@ -49,9 +51,11 @@ ServerFailure handleDioExceptions(DioException e) {
         case 409:
           return ServerFailure('يوجد تعارض في البيانات المدخلة.');
         case 422:
-          return ServerFailure(
-            'لا يمكن معالجة البيانات المدخلة. تحقق من صحتها.',
-          );
+          final msg = e.response?.data is Map<String, dynamic>
+              ? e.response?.data['message'] ?? 'البيانات المدخلة غير صحيحة.'
+              : 'البيانات المدخلة غير صحيحة.';
+
+          return ServerFailure(msg);
         case 500:
           return ServerFailure('غير مصرح. تأكد من تسجيل الدخول.');
         case 503:

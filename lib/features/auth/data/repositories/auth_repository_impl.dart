@@ -15,10 +15,15 @@ class AuthRepositoryImpl implements AuthRepo {
   Future<Either<Failure, AuthUser>> login(
     String userName,
     String password,
+    String fcmToken,
   ) async {
     try {
       final model = await remoteDataSource.login(
-        LoginRequestModel(userName: userName, password: password),
+        LoginRequestModel(
+          userName: userName,
+          password: password,
+          fcmToken: fcmToken,
+        ),
       );
       return Right(
         AuthUser(

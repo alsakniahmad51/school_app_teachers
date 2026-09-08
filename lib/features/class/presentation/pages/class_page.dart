@@ -18,11 +18,11 @@ class ClassPage extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              const ClassHeader(),
-              const SizedBox(height: 12),
-              const SemesterSwitcher(),
+              ClassHeader(section: section),
               const SizedBox(height: 12),
 
+              // const SemesterSwitcher(),
+              // const SizedBox(height: 12),
               const SubjectListItem(courseTitle: 'الفقه والشريعة'),
               const SizedBox(height: 8),
               const SubjectListItem(courseTitle: 'الأخلاق والمعاملات'),

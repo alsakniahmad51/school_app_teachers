@@ -22,18 +22,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedGrade = 7;
+  String _selectedGrade = "الصف السابع";
   @override
   void initState() {
     super.initState();
-    _initFcm();
+
     context.read<TeacherSectionsCubit>().getTeacherSections();
-  }
-
-  Future<void> _initFcm() async {
-    final fcmCubit = context.read<FcmCubit>();
-
-    await fcmCubit.init(true, null);
   }
 
   @override
@@ -54,31 +48,51 @@ class _HomePageState extends State<HomePage> {
                 return Column(
                   children: [
                     HomeHeader(teacherName: state.data.teacherName),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            GradeSwitcher(
-                              selectedGrade: _selectedGrade,
-                              onGradeSelected: (grade) =>
-                                  setState(() => _selectedGrade = grade),
-                            ),
-                            const SizedBox(height: 12),
-                            ..._classCards(teachersections: state.data),
-                          ],
-                        ),
+                    SingleChildScrollView(
+                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          GradeSwitcher(
+                            selectedGrade: _selectedGrade,
+                            onGradeSelected: (grade) =>
+                                setState(() => _selectedGrade = grade),
+                          ),
+                          const SizedBox(height: 12),
+                          ..._classCards(teachersections: state.data),
+                        ],
                       ),
                     ),
                   ],
                 );
               } else if (state is TeacherSectionsFailure) {
-                return const Center(
-                  child: Text('حدث خطأ أثناء تحميل البيانات'),
+                return Center(
+                  child: Column(
+                    children: [
+                      Text('حدث خطأ أثناء تحميل البيانات'),
+                      TextButton(
+                        onPressed: () {
+                          context
+                              .read<TeacherSectionsCubit>()
+                              .getTeacherSections();
+                        },
+                        child: const Text('إعادة المحاولة'),
+                      ),
+                    ],
+                  ),
                 );
               }
-              return const Center(child: Text('حدث خطأ غير معروف'));
+              return Column(
+                children: [
+                  const Center(child: Text('حدث خطأ غير معروف')),
+                  TextButton(
+                    onPressed: () {
+                      context.read<TeacherSectionsCubit>().getTeacherSections();
+                    },
+                    child: const Text('إعادة المحاولة'),
+                  ),
+                ],
+              );
             },
           ),
         ),
@@ -87,7 +101,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> _classCards({required TeacherSections teachersections}) {
-    List<Section> sections = teachersections.sections;
+    List<Section> sections = teachersections.sections
+        .where((section) => section.className == _selectedGrade)
+        .toList();
     return [
       for (var index = 0; index < sections.length; index++)
         Padding(

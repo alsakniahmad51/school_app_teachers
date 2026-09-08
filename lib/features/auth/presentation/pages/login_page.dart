@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachers_app/core/api/dio_consumer.dart';
+import 'package:teachers_app/core/manager/fcm_cubit/fcm_cubit.dart';
 import 'package:teachers_app/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:teachers_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:teachers_app/features/auth/domain/usecases/login_use_case.dart';
@@ -43,7 +44,10 @@ class LoginPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        child: LoginForm(),
+                        child: LoginForm(
+                          fcmToken:
+                              context.read<FcmCubit>().state.fcmToken ?? '',
+                        ),
                       ),
                     ],
                   ),

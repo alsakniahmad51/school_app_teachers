@@ -8,8 +8,8 @@ import 'package:teachers_app/features/home/presentation/pages/home_page.dart';
 import 'primary_button.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
-
+  const LoginForm({super.key, required this.fcmToken});
+  final String fcmToken;
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
@@ -32,6 +32,7 @@ class _LoginFormState extends State<LoginForm> {
     context.read<LoginCubit>().login(
       userName: _emailController.text.trim(),
       password: _passwordController.text.trim(),
+      fcmToken: widget.fcmToken,
     );
   }
 
@@ -40,9 +41,6 @@ class _LoginFormState extends State<LoginForm> {
     return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state is LoginSuccess) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('مرحباً ')));
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
@@ -52,16 +50,22 @@ class _LoginFormState extends State<LoginForm> {
         }
 
         if (state is LoginFailure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.message.contains("302")
+                    ? "اسم المستخدم او كلمة المرور خاطئة"
+                    : state.message,
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       },
       builder: (context, state) {
         final isLoading = state is LoginLoading;
 
         return Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -71,7 +75,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: Row(
                   children: [
                     Text(
-                      "البريد الإلكتروني / اسم المستخدم ",
+                      "اسم المستخدم ",
                       style: TextStyle(
                         color: Color(0xFF111827),
                         fontSize: 15,

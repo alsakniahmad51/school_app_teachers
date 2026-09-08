@@ -9,14 +9,14 @@ class GradeSwitcher extends StatelessWidget {
     required this.onGradeSelected,
   });
 
-  final int selectedGrade;
-  final ValueChanged<int> onGradeSelected;
+  final String selectedGrade;
+  final ValueChanged<String> onGradeSelected;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
-      children: [7, 8, 9].map((grade) {
+      children: ["الصف السابع", "الصف الثامن", "الصف التاسع"].map((grade) {
         final isSelected = grade == selectedGrade;
         return Padding(
           padding: const EdgeInsets.only(left: 8),
@@ -59,6 +59,9 @@ class GradeSwitcher extends StatelessWidget {
     );
   }
 
-  String _gradeName(int grade) =>
-      const {7: 'السابع', 8: 'الثامن', 9: 'التاسع'}[grade]!;
+  String _gradeName(String grade) => const {
+    'الصف السابع': 'السابع',
+    'الصف الثامن': 'الثامن',
+    'الصف التاسع': 'التاسع',
+  }[grade]!;
 }

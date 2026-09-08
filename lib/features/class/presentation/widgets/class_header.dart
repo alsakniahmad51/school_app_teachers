@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:teachers_app/features/home/domain/entity/section.dart';
 
 class ClassHeader extends StatelessWidget {
-  const ClassHeader({super.key});
+  const ClassHeader({super.key, required this.section});
 
+  final Section section;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,7 +20,7 @@ class ClassHeader extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              "الصف , الشعبة",
+              "${section.className} , ${section.name}",
               textDirection: TextDirection.rtl,
               style: TextStyle(
                 fontSize: 24,

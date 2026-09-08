@@ -11,7 +11,8 @@ class LoginUseCase {
   Future<Either<Failure, AuthUser>> call(
     String userName,
     String password,
+    String fcmToken,
   ) async {
-    return await repository.login(userName, password);
+    return await repository.login(userName, password, fcmToken);
   }
 }

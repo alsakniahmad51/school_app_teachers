@@ -13,10 +13,11 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login({
     required String userName,
     required String password,
+    required String fcmToken,
   }) async {
     emit(LoginLoading());
 
-    final result = await loginUseCase(userName, password);
+    final result = await loginUseCase(userName, password, fcmToken);
     result.fold((failure) => emit(LoginFailure(failure.message)), (user) async {
       emit(LoginSuccess(user));
       await TokenStorage.saveToken(user.accessToken);
