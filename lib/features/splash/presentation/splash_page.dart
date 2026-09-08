@@ -37,7 +37,6 @@ class _SplashPageState extends State<SplashPage> {
     final fcmCubit = context.read<FcmCubit>();
 
     await fcmCubit.init(true, null);
-    log('FCM Token: ${fcmCubit.state.fcmToken}', name: 'SplashPage');
   }
 
   @override

@@ -6,8 +6,15 @@ import '../widgets/course_details_header.dart';
 import '../widgets/course_tab_switcher.dart';
 
 class CourseDetailsPage extends StatefulWidget {
-  const CourseDetailsPage({super.key, required this.courseTitle});
+  const CourseDetailsPage({
+    super.key,
+    required this.courseTitle,
+    required this.subjectId,
+  });
+
   final String courseTitle;
+  final int subjectId;
+
   @override
   State<CourseDetailsPage> createState() => _CourseDetailsPageState();
 }
@@ -43,7 +50,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                     const SizedBox(height: 18),
                     Expanded(
                       child: showAttachments
-                          ? const CourseAttachmentsPage()
+                          ? CourseAttachmentsPage(subjectId: widget.subjectId)
                           : CourseTestsPage(courseTitle: widget.courseTitle),
                     ),
                   ],

@@ -4,6 +4,7 @@ class Section {
   final int classId;
   final String className;
   final String comment;
+  final int totalStudents;
   final String createdAt;
   final String updatedAt;
 
@@ -13,7 +14,9 @@ class Section {
     required this.classId,
     required this.className,
     required this.comment,
+
     required this.createdAt,
     required this.updatedAt,
+    required this.totalStudents,
   });
 }

@@ -20,6 +20,7 @@ class SectionsRepositoryImpl implements SectionsRepo {
           teacherId: model.teacherId,
           teacherName: model.teacherName,
           total: model.total,
+
           sections: model.sections,
         ),
       );

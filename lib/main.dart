@@ -16,6 +16,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final token = await savedToken();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);

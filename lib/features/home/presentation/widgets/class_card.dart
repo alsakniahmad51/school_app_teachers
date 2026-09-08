@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'home_colors.dart';
 
 class ClassCard extends StatelessWidget {
-  const ClassCard({super.key, required this.title, required this.onPressed});
-
+  const ClassCard({
+    super.key,
+    required this.title,
+    required this.onPressed,
+    required this.totalStudents,
+  });
+  final int totalStudents;
   final String title;
   final VoidCallback onPressed;
 
@@ -57,17 +62,9 @@ class ClassCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Text(
-                            'الموجه: أ. راشد الأحمد',
-                            style: TextStyle(
-                              color: HomeColors.secondaryText,
-                              fontSize: 12,
-                              height: 1.35,
-                            ),
-                          ),
                           const SizedBox(width: 8),
-                          const Text(
-                            '50 طالب',
+                          Text(
+                            "${totalStudents} طالب",
                             style: TextStyle(
                               color: HomeColors.secondaryText,
                               fontSize: 12,

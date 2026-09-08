@@ -9,6 +9,7 @@ class SectionModel extends Section {
     required super.comment,
     required super.createdAt,
     required super.updatedAt,
+    required super.totalStudents,
   });
 
   factory SectionModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +21,7 @@ class SectionModel extends Section {
       comment: json['comment'] ?? '',
       createdAt: json['created_at'] ?? '',
       updatedAt: json['updated_at'] ?? '',
+      totalStudents: json['students_count'] ?? 0,
     );
   }
 }

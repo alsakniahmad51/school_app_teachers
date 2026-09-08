@@ -41,6 +41,7 @@ dependencies:
   flutter_secure_storage: ^11.0.0
   flutter_svg: ^2.3.0
   get_it: ^9.2.1
+  path_provider: ^2.1.6
   phosphor_flutter: ^2.1.0
   shared_preferences: ^2.5.5
 

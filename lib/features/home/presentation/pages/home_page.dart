@@ -1,9 +1,12 @@
-import 'dart:developer';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachers_app/core/api/dio_consumer.dart';
 import 'package:teachers_app/core/functions/navigation.dart';
-import 'package:teachers_app/core/manager/fcm_cubit/fcm_cubit.dart';
+import 'package:teachers_app/features/class/data/datasource/subjects_remote_data_source.dart';
+import 'package:teachers_app/features/class/data/repo/subjects_repository_impl.dart';
+import 'package:teachers_app/features/class/domain/usecase/get_subjects_by_class_and_section_use_case.dart';
+import 'package:teachers_app/features/class/presentation/manager/subjects_cubit.dart';
 import 'package:teachers_app/features/class/presentation/pages/class_page.dart';
 import 'package:teachers_app/features/home/domain/entity/section.dart';
 import 'package:teachers_app/features/home/domain/entity/teacher_sections.dart';
@@ -41,26 +44,26 @@ class _HomePageState extends State<HomePage> {
           child: BlocBuilder<TeacherSectionsCubit, TeacherSectionsState>(
             builder: (context, state) {
               if (state is TeacherSectionsLoading) {
-                return Expanded(
-                  child: const Center(child: CircularProgressIndicator()),
-                );
+                return const Center(child: CircularProgressIndicator());
               } else if (state is TeacherSectionsSuccess) {
                 return Column(
                   children: [
                     HomeHeader(teacherName: state.data.teacherName),
-                    SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          GradeSwitcher(
-                            selectedGrade: _selectedGrade,
-                            onGradeSelected: (grade) =>
-                                setState(() => _selectedGrade = grade),
-                          ),
-                          const SizedBox(height: 12),
-                          ..._classCards(teachersections: state.data),
-                        ],
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            GradeSwitcher(
+                              selectedGrade: _selectedGrade,
+                              onGradeSelected: (grade) =>
+                                  setState(() => _selectedGrade = grade),
+                            ),
+                            const SizedBox(height: 12),
+                            ..._classCards(teachersections: state.data),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -113,12 +116,24 @@ class _HomePageState extends State<HomePage> {
           child: ClassCard(
             title: sections[index].name,
             onPressed: () => _showClassDetails(sections[index]),
+            totalStudents: sections[index].totalStudents,
           ),
         ),
     ];
   }
 
   void _showClassDetails(Section section) {
-    context.navigationWithFade(ClassPage(section: section));
+    context.navigationWithFade(
+      BlocProvider(
+        create: (context) => SubjectsCubit(
+          GetSubjectsByClassAndSectionUseCase(
+            SubjectsRepositoryImpl(
+              SubjectsRemoteDataSourceImpl(DioConsumer(dio: Dio())),
+            ),
+          ),
+        ),
+        child: ClassPage(section: section),
+      ),
+    );
   }
 }
