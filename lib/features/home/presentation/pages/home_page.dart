@@ -8,6 +8,10 @@ import 'package:teachers_app/features/class/data/repo/subjects_repository_impl.d
 import 'package:teachers_app/features/class/domain/usecase/get_subjects_by_class_and_section_use_case.dart';
 import 'package:teachers_app/features/class/presentation/manager/subjects_cubit.dart';
 import 'package:teachers_app/features/class/presentation/pages/class_page.dart';
+import 'package:teachers_app/features/course/data/datasourese/subjects_remoteg_data_source.dart';
+import 'package:teachers_app/features/course/data/repo/subjects_repository_global_impl.dart';
+import 'package:teachers_app/features/course/domain/usecases/get_subjects_by_class_use_case_global.dart';
+import 'package:teachers_app/features/course/presentation/manager/subject_cubit/subjects_global_cubit.dart';
 import 'package:teachers_app/features/home/domain/entity/section.dart';
 import 'package:teachers_app/features/home/domain/entity/teacher_sections.dart';
 import 'package:teachers_app/features/home/presentation/manager/teacher_sections_cubit.dart/teacher_sections_cubit.dart';
@@ -125,10 +129,10 @@ class _HomePageState extends State<HomePage> {
   void _showClassDetails(Section section) {
     context.navigationWithFade(
       BlocProvider(
-        create: (context) => SubjectsCubit(
-          GetSubjectsByClassAndSectionUseCase(
-            SubjectsRepositoryImpl(
-              SubjectsRemoteDataSourceImpl(DioConsumer(dio: Dio())),
+        create: (context) => SubjectsCubitGlobal(
+          GetSubjectsByClassUseCaseGlobal(
+            SubjectsGlobalRepositoryImpl(
+              SubjectsRemoteDataSourceImplGlobal(DioConsumer(dio: Dio())),
             ),
           ),
         ),

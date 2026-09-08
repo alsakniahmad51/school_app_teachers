@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachers_app/core/api/dio_consumer.dart';
 import 'package:teachers_app/core/functions/navigation.dart';
-import 'package:teachers_app/features/class/domain/entity/subject.dart';
 import 'package:teachers_app/features/course/data/datasourese/files_remote_data_source.dart';
 import 'package:teachers_app/features/course/data/repo/files_repository_impl.dart';
+import 'package:teachers_app/features/course/domain/entity/subject_global.dart';
+import 'package:teachers_app/features/course/domain/usecases/delete_subject_file_use_case.dart';
+import 'package:teachers_app/features/course/domain/usecases/download_subject_file_use_case.dart';
 import 'package:teachers_app/features/course/domain/usecases/get_subject_files_use_case.dart';
-import 'package:teachers_app/features/course/presentation/manager/subject_files_cubit.dart';
+import 'package:teachers_app/features/course/domain/usecases/upload_subject_file_use_case.dart';
+import 'package:teachers_app/features/course/presentation/manager/files_cubit/subject_files_cubit.dart';
 import 'package:teachers_app/features/course/presentation/pages/course_details_page.dart';
 
 class SubjectListItem extends StatelessWidget {
-  final Subject subject;
+  final SubjectGlobal subject;
   const SubjectListItem({super.key, required this.subject});
 
   @override
@@ -25,6 +28,15 @@ class SubjectListItem extends StatelessWidget {
                 FilesRepositoryImpl(
                   FilesRemoteDataSourceImpl(DioConsumer(dio: Dio())),
                 ),
+              ),
+              DownloadSubjectFileUseCase(
+                FilesRemoteDataSourceImpl(DioConsumer(dio: Dio())),
+              ),
+              DeleteSubjectFileUseCase(
+                FilesRemoteDataSourceImpl(DioConsumer(dio: Dio())),
+              ),
+              UploadSubjectFileUseCase(
+                FilesRemoteDataSourceImpl(DioConsumer(dio: Dio())),
               ),
             ),
             child: CourseDetailsPage(
