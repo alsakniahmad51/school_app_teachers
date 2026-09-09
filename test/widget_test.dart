@@ -40,7 +40,7 @@ void main() {
 
     await tester.pumpWidget(
       const MaterialApp(
-        home: CourseTestsPage(tests: [test], courseTitle: 'cscsc'),
+        home: CourseTestsPage(courseTitle: 'cscsc', subjectId: 5),
       ),
     );
 

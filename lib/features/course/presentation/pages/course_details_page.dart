@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachers_app/core/api/dio_consumer.dart';
+import 'package:teachers_app/features/course/data/datasourese/exams_remote_data_source.dart';
+import 'package:teachers_app/features/course/data/repo/exams_repository_impl.dart';
+import 'package:teachers_app/features/course/domain/usecases/get_exams_list_use_case.dart';
 
 import 'course_attachments_page.dart';
 import 'course_test_page.dart';
+import '../manager/exam_cubit/exams_cubit.dart';
 import '../widgets/course_details_header.dart';
 import '../widgets/course_tab_switcher.dart';
 
@@ -51,7 +58,21 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                     Expanded(
                       child: showAttachments
                           ? CourseAttachmentsPage(subjectId: widget.subjectId)
-                          : CourseTestsPage(courseTitle: widget.courseTitle),
+                          : BlocProvider(
+                              create: (_) => ExamsCubit(
+                                GetExamsListUseCase(
+                                  ExamsRepositoryImpl(
+                                    ExamsRemoteDataSourceImpl(
+                                      DioConsumer(dio: Dio()),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              child: CourseTestsPage(
+                                subjectId: widget.subjectId,
+                                courseTitle: widget.courseTitle,
+                              ),
+                            ),
                     ),
                   ],
                 ),

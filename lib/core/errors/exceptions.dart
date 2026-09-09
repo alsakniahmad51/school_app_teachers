@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 
 abstract class Failure {
@@ -51,8 +49,9 @@ ServerFailure handleDioExceptions(DioException e) {
         case 409:
           return ServerFailure('يوجد تعارض في البيانات المدخلة.');
         case 422:
-          final msg = e.response?.data is Map<String, dynamic>
-              ? e.response?.data['message'] ?? 'البيانات المدخلة غير صحيحة.'
+          final responseData = e.response?.data;
+          final msg = responseData is Map<String, dynamic>
+              ? _validationMessage(responseData)
               : 'البيانات المدخلة غير صحيحة.';
 
           return ServerFailure(msg);
@@ -73,4 +72,18 @@ ServerFailure handleDioExceptions(DioException e) {
       // TODO: Handle this case.
       throw UnimplementedError();
   }
+}
+
+String _validationMessage(Map<String, dynamic> data) {
+  final message = data['message'];
+  if (message is String && message.isNotEmpty) return message;
+
+  final errors = data['errors'];
+  if (errors is Map) {
+    return errors.entries
+        .map((entry) => '${entry.key}: ${entry.value}')
+        .join('\n');
+  }
+
+  return 'البيانات المدخلة غير صحيحة.';
 }
